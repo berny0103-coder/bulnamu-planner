@@ -2052,7 +2052,20 @@ function closeInAppBrowser() {
   if (el) el.remove();
 }
 
-function kakaoAlert(){alert('카카오 채널 연동 준비 중이에요!\n곧 연결해드릴게요 😊');}
+function kakaoAlert(){
+  window.open('https://pf.kakao.com/_unexfs','_blank');
+  // 카카오 친구추가 클릭 시 할인 타이머 시작
+  if (!localStorage.getItem(DISCOUNT_KEY)) {
+    localStorage.setItem(DISCOUNT_KEY, Date.now().toString());
+  }
+  setTimeout(() => {
+    updateDiscountUI();
+    const card = document.getElementById('discountCard');
+    if (card && card.style.display !== 'none') {
+      card.scrollIntoView({behavior:'smooth', block:'center'});
+    }
+  }, 500);
+}
 
 // ── SHARE ──
 function shareResult(){
