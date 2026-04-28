@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<!-- v2026-04-28-relay-landing -->
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="color-scheme" content="light only">
+<title>숙취엔벌나무 — 친구가 추천한 릴레이</title>
+<meta property="og:title" content="숙취엔벌나무 릴레이 — 다음 사람을 살려주세요">
+<meta property="og:description" content="술 마시고 다음날 힘들었던 사람들이 서로를 살려주는 작은 릴레이.">
+<meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Noto+Sans+KR:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root { color-scheme: light only; }
+@media (prefers-color-scheme: dark) {
+  html { filter: none !important; background: #f7f6f2 !important; }
+  body { background: #f7f6f2 !important; color: #111110 !important; }
+}
+:root {
+  --bg: #f5f3ed;
+  --surface: #ffffff;
+  --card: #ffffff;
+  --card2: #f0efe9;
+  --border: #e0ddd4;
+  --border2: #c8c4b8;
+  --green: #2d6a3f;
+  --green2: #3d8a52;
+  --green-light: #e8f2eb;
+  --green-glow: rgba(45,106,63,0.08);
+  --text: #111110;
+  --text-dim: #3a3a2e;
+  --text-muted: #7a7868;
+  --red: #c0402a;
+  --shadow: 0 2px 16px rgba(0,0,0,0.06);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.10);
+}
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html { background: #f7f6f2 !important; }
+body {
+  background: var(--bg) !important;
+  color: var(--text) !important;
+  font-family: 'Noto Sans KR', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 35% at 50% 0%, rgba(45,106,63,0.06) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* WRAP */
+.wrap { max-width: 460px; margin: 0 auto; padding: 28px 22px 60px; position: relative; z-index: 1; }
+
+/* LOGO */
+.logo {
+  text-align: center;
+  margin-bottom: 32px;
+}
+.logo-brand {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: var(--green);
+}
+.logo-divider {
+  width: 32px; height: 1px;
+  background: var(--green);
+  margin: 6px auto;
+  opacity: 0.4;
+}
+.logo-product {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+/* COUNTER PILL */
+.counter-pill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--card);
+  border: 1px solid var(--green-light);
+  border-radius: 100px;
+  padding: 9px 18px;
+  font-size: 12px;
+  color: var(--text-dim);
+  font-weight: 500;
+  margin: 0 auto 24px;
+  width: fit-content;
+  box-shadow: var(--shadow);
+  font-family: 'Noto Sans KR', sans-serif;
+}
+.counter-pill .dot {
+  width: 7px; height: 7px;
+  background: var(--green);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+  box-shadow: 0 0 0 0 rgba(45,106,63,0.5);
+}
+.counter-pill strong { color: var(--green); font-weight: 700; }
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(45,106,63,0.5); }
+  70% { box-shadow: 0 0 0 8px rgba(45,106,63,0); }
+  100% { box-shadow: 0 0 0 0 rgba(45,106,63,0); }
+}
+
+/* REFERRER BANNER */
+.ref-banner {
+  background: var(--green-light);
+  border: 1px solid rgba(45,106,63,0.15);
+  border-radius: 16px;
+  padding: 16px 18px;
+  margin-bottom: 28px;
+  text-align: center;
+}
+.ref-banner-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--green);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  opacity: 0.75;
+}
+.ref-banner-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--green);
+  font-style: italic;
+}
+.ref-banner-name strong {
+  font-style: normal;
+  font-weight: 700;
+}
+.ref-banner-msg {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-top: 6px;
+}
+
+/* STORY CARD */
+.story {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 32px 26px;
+  margin-bottom: 28px;
+  box-shadow: var(--shadow);
+  position: relative;
+}
+.story-quote {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 60px;
+  line-height: 1;
+  color: var(--green);
+  opacity: 0.15;
+  position: absolute;
+  top: 16px;
+  left: 22px;
+  font-weight: 600;
+}
+.story-text {
+  font-size: 15px;
+  line-height: 1.95;
+  color: var(--text);
+  text-align: center;
+  position: relative;
+}
+.story-text p { margin-bottom: 14px; }
+.story-text p:last-child { margin-bottom: 0; }
+.story-text strong {
+  color: var(--green);
+  font-weight: 700;
+}
+.story-text em {
+  font-style: normal;
+  color: var(--text-dim);
+  font-size: 14px;
+}
+.story-divider {
+  width: 30px;
+  height: 1px;
+  background: var(--border2);
+  margin: 18px auto;
+}
+
+/* CTA SECTION */
+.cta-section {
+  background: var(--card);
+  border: 1.5px solid var(--green);
+  border-radius: 20px;
+  padding: 24px 22px;
+  box-shadow: var(--shadow-lg);
+  margin-bottom: 24px;
+}
+.cta-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+  text-align: center;
+}
+.cta-title em {
+  color: var(--green);
+  font-style: italic;
+}
+.cta-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: center;
+  margin-bottom: 22px;
+  line-height: 1.6;
+}
+
+/* FORM */
+.field { margin-bottom: 14px; }
+.field-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 7px;
+  display: block;
+}
+.field-input, .field-textarea {
+  width: 100%;
+  background: var(--card2);
+  border: 1.5px solid transparent;
+  border-radius: 12px;
+  padding: 13px 15px;
+  font-size: 15px;
+  font-family: 'Noto Sans KR', sans-serif;
+  color: var(--text);
+  transition: all 0.18s;
+  outline: none;
+  -webkit-appearance: none;
+}
+.field-input:focus, .field-textarea:focus {
+  background: var(--card);
+  border-color: var(--green);
+  box-shadow: 0 0 0 4px var(--green-glow);
+}
+.field-input::placeholder, .field-textarea::placeholder { color: var(--text-muted); opacity: 0.6; }
+.field-textarea { resize: none; min-height: 70px; line-height: 1.5; }
+.field-hint { font-size: 11px; color: var(--text-muted); margin-top: 5px; line-height: 1.5; }
+.field-error { font-size: 11px; color: var(--red); margin-top: 5px; display: none; }
+.field-error.show { display: block; }
+
+.btn-submit {
+  width: 100%;
+  background: var(--green);
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  padding: 17px;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'Noto Sans KR', sans-serif;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: all 0.2s;
+  box-shadow: 0 4px 14px rgba(45,106,63,0.25);
+}
+.btn-submit:hover { background: var(--green2); transform: translateY(-1px); box-shadow: 0 6px 18px rgba(45,106,63,0.32); }
+.btn-submit:active { transform: translateY(0); }
+.btn-submit:disabled { background: var(--text-muted); cursor: not-allowed; transform: none; box-shadow: none; opacity: 0.6; }
+
+.consent {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: 14px;
+  line-height: 1.6;
+}
+
+/* FULL STATE */
+.full-state {
+  background: var(--card);
+  border: 1.5px solid var(--red);
+  border-radius: 20px;
+  padding: 32px 24px;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+}
+.full-icon { font-size: 36px; margin-bottom: 12px; }
+.full-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--red);
+  margin-bottom: 8px;
+}
+.full-msg {
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+.full-btn {
+  display: inline-block;
+  background: var(--green);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 24px;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* FOOTER */
+.footer {
+  text-align: center;
+  margin-top: 36px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+.footer a { color: var(--green); text-decoration: none; }
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fadeUp 0.5s ease-out backwards; }
+.fade-up-1 { animation-delay: 0.05s; }
+.fade-up-2 { animation-delay: 0.15s; }
+.fade-up-3 { animation-delay: 0.25s; }
+.fade-up-4 { animation-delay: 0.35s; }
+
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- LOGO -->
+  <div class="logo fade-up fade-up-1">
+    <div class="logo-brand">Beolnamu <em>Relay</em></div>
+    <div class="logo-divider"></div>
+    <div class="logo-product">SUKCHWI · BEOLNAMU · 2026</div>
+  </div>
+
+  <!-- COUNTER PILL -->
+  <div class="counter-pill fade-up fade-up-1" id="counterPill">
+    <span class="dot"></span>
+    <span>지금 <strong id="totalCount">…</strong>명이 이어가고 있어요</span>
+  </div>
+
+  <!-- REFERRER BANNER (if ?ref=) -->
+  <div class="ref-banner fade-up fade-up-2" id="refBanner" style="display:none;">
+    <div class="ref-banner-label">From</div>
+    <div class="ref-banner-name"><strong id="refName">—</strong>님이 당신을 추천했습니다</div>
+    <div class="ref-banner-msg">당신을 살리려고 한 번 보냈어요</div>
+  </div>
+
+  <!-- STORY -->
+  <div class="story fade-up fade-up-2">
+    <div class="story-quote">"</div>
+    <div class="story-text">
+      <p>이건 그냥 이벤트가 아닙니다.</p>
+      <p>술 마시고 다음날 힘들었던 사람들이<br><strong>서로를 살려주는 작은 릴레이</strong>입니다.</p>
+      <div class="story-divider"></div>
+      <p>저는 이걸 받았고,<br>다음 사람을 한 명 추천합니다.</p>
+      <p>이걸 받은 <strong>당신도</strong><br>다음 한 명을 살려주세요.</p>
+      <div class="story-divider"></div>
+      <p><em>참여 = 무료 1포 체험 (선착순 400명)</em></p>
+    </div>
+  </div>
+
+  <!-- CTA: 신청 폼 OR 마감 -->
+  <div id="formContainer">
+    <!-- 동적으로 채워짐 -->
+  </div>
+
+  <div class="footer">
+    숙취엔벌나무 · <a href="https://pf.kakao.com/_unexfs" target="_blank">카카오 채널</a><br>
+    문의: 카톡 채널로 연락주세요
+  </div>
+
+</div>
+
+<script src="/shared.js"></script>
+<script>
+// ── 페이지 진입 ──
+const refCode = Util.getRefFromURL();
+const referrer = refCode ? DataStore.getReferrer(refCode) : null;
+const stats = DataStore.getStats();
+
+// 카운터 표시
+document.getElementById('totalCount').textContent = stats.total;
+
+// 추천자 배너
+if (referrer) {
+  document.getElementById('refBanner').style.display = 'block';
+  document.getElementById('refName').textContent = referrer.name;
+}
+
+// 폼 영역 렌더
+const formContainer = document.getElementById('formContainer');
+
+if (stats.isFull) {
+  // ── 마감 화면 ──
+  formContainer.innerHTML = `
+    <div class="full-state fade-up fade-up-3">
+      <div class="full-icon">🌿</div>
+      <div class="full-title">선착순 마감</div>
+      <div class="full-msg">
+        400명 무료 체험 신청이 모두 마감됐어요.<br>
+        그래도 벌나무가 궁금하시다면<br>
+        스마트스토어에서 만나보실 수 있어요.
+      </div>
+      <a href="${CONFIG.STORE_URL_NORMAL}" target="_blank" class="full-btn">스마트스토어 가기 →</a>
+    </div>
+  `;
+} else {
+  // ── 신청 폼 ──
+  formContainer.innerHTML = `
+    <div class="cta-section fade-up fade-up-3">
+      <div class="cta-title">무료 <em>1포</em> 체험 신청</div>
+      <div class="cta-sub">
+        남은 자리 <strong style="color:var(--green);">${stats.remaining}명</strong> · 주소만 입력하면 끝
+      </div>
+
+      <form id="applyForm" novalidate>
+        <div class="field">
+          <label class="field-label">이름</label>
+          <input type="text" class="field-input" id="fName" placeholder="홍길동" autocomplete="name" required>
+          <div class="field-error" id="errName">이름을 입력해주세요</div>
+        </div>
+
+        <div class="field">
+          <label class="field-label">휴대폰</label>
+          <input type="tel" class="field-input" id="fPhone" placeholder="010-1234-5678" autocomplete="tel" inputmode="numeric" required>
+          <div class="field-hint">발송 안내용으로만 사용돼요</div>
+          <div class="field-error" id="errPhone">올바른 휴대폰 번호를 입력해주세요</div>
+        </div>
+
+        <div class="field">
+          <label class="field-label">받을 주소</label>
+          <input type="text" class="field-input" id="fAddress" placeholder="서울특별시 강남구 ..." autocomplete="street-address" required>
+          <div class="field-error" id="errAddress">주소를 입력해주세요</div>
+        </div>
+
+        <div class="field">
+          <label class="field-label">한 마디 (선택)</label>
+          <textarea class="field-textarea" id="fMessage" placeholder="다음 사람에게 한 마디..." maxlength="100"></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit" id="btnSubmit">무료 체험 신청하기 →</button>
+
+        <div class="consent">
+          개인정보는 무료 1포 발송 목적으로만 사용되며,<br>발송 후 안전하게 폐기됩니다.
+        </div>
+      </form>
+    </div>
+  `;
+
+  // 폼 이벤트 바인딩
+  bindForm();
+}
+
+// ── 폼 핸들러 ──
+function bindForm() {
+  const form = document.getElementById('applyForm');
+  const fName = document.getElementById('fName');
+  const fPhone = document.getElementById('fPhone');
+  const fAddress = document.getElementById('fAddress');
+  const fMessage = document.getElementById('fMessage');
+  const btnSubmit = document.getElementById('btnSubmit');
+
+  // 휴대폰 자동 포맷팅
+  fPhone.addEventListener('input', (e) => {
+    e.target.value = Util.formatPhone(e.target.value);
+  });
+
+  // 입력 시 에러 숨김
+  ['fName', 'fPhone', 'fAddress'].forEach(id => {
+    document.getElementById(id).addEventListener('input', () => {
+      document.getElementById('err' + id.slice(1)).classList.remove('show');
+    });
+  });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    // 검증
+    let valid = true;
+    if (!fName.value.trim()) {
+      document.getElementById('errName').classList.add('show'); valid = false;
+    }
+    if (!Util.isValidPhone(fPhone.value)) {
+      document.getElementById('errPhone').classList.add('show'); valid = false;
+    }
+    if (!fAddress.value.trim() || fAddress.value.trim().length < 5) {
+      document.getElementById('errAddress').classList.add('show'); valid = false;
+    }
+    if (!valid) return;
+
+    // 제출
+    btnSubmit.disabled = true;
+    btnSubmit.textContent = '신청 중...';
+
+    const result = DataStore.addApplicant({
+      name: fName.value,
+      phone: fPhone.value,
+      address: fAddress.value,
+      message: fMessage.value,
+      referredByCode: refCode,
+    });
+
+    if (!result.ok) {
+      if (result.reason === 'duplicate') {
+        alert('이 휴대폰 번호로 이미 신청하셨어요.\n친구에게 추천 링크를 보내보세요!');
+        // 이 경우에도 done 페이지로 보낼지? 일단 폼 리셋
+        btnSubmit.disabled = false;
+        btnSubmit.textContent = '무료 체험 신청하기 →';
+        return;
+      }
+      if (result.reason === 'full') {
+        alert('선착순 400명이 마감됐어요.\n페이지를 새로고침합니다.');
+        location.reload();
+        return;
+      }
+    }
+
+    // 성공 → done 페이지로 이동 (내 코드 들고)
+    location.href = `/done?c=${result.applicant.code}&pos=${result.position}`;
+  });
+}
+</script>
+
+</body>
+</html>

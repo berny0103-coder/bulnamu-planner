@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<!-- v2026-04-28-relay-admin -->
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light only">
+<meta name="robots" content="noindex, nofollow">
+<title>벌나무 릴레이 — 관리자</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root { color-scheme: light only; }
+:root {
+  --bg: #f5f3ed;
+  --card: #ffffff;
+  --card2: #f0efe9;
+  --border: #e0ddd4;
+  --green: #2d6a3f;
+  --green-light: #e8f2eb;
+  --green-deep: #1a4527;
+  --text: #111110;
+  --text-dim: #3a3a2e;
+  --text-muted: #7a7868;
+  --red: #c0402a;
+  --amber: #b07820;
+  --shadow: 0 2px 16px rgba(0,0,0,0.06);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { background: #f7f6f2 !important; }
+body {
+  background: var(--bg) !important;
+  color: var(--text) !important;
+  font-family: 'Noto Sans KR', sans-serif;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* LOGIN GATE */
+.gate {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.gate-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 36px 30px;
+  box-shadow: var(--shadow);
+  width: 100%;
+  max-width: 360px;
+  text-align: center;
+}
+.gate-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  color: var(--green);
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+.gate-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+.gate-input {
+  width: 100%;
+  background: var(--card2);
+  border: 1.5px solid transparent;
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 15px;
+  text-align: center;
+  letter-spacing: 0.05em;
+  color: var(--text);
+  margin-bottom: 12px;
+  outline: none;
+  transition: all 0.18s;
+}
+.gate-input:focus { background: var(--card); border-color: var(--green); }
+.gate-btn {
+  width: 100%;
+  background: var(--green);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+.gate-error {
+  color: var(--red);
+  font-size: 12px;
+  margin-top: 10px;
+  display: none;
+}
+.gate-error.show { display: block; }
+
+/* ADMIN PAGE */
+.admin-wrap { max-width: 1200px; margin: 0 auto; padding: 24px 20px 60px; }
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.admin-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--text);
+}
+.admin-title em { color: var(--green); font-style: italic; }
+.admin-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.btn {
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 9px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-family: 'Noto Sans KR', sans-serif;
+  transition: all 0.15s;
+}
+.btn:hover { border-color: var(--green); color: var(--green); }
+.btn-primary { background: var(--green); color: #fff; border-color: var(--green); }
+.btn-primary:hover { background: var(--green-deep); color: #fff; }
+.btn-danger { color: var(--red); border-color: rgba(192,64,42,0.3); }
+.btn-danger:hover { background: var(--red); color: #fff; border-color: var(--red); }
+
+/* STAT CARDS */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px 18px;
+  box-shadow: var(--shadow);
+}
+.stat-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.stat-value {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--text);
+}
+.stat-value em {
+  font-style: normal;
+  font-size: 13px;
+  color: var(--text-muted);
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 400;
+  margin-left: 4px;
+}
+.stat-card.green .stat-value { color: var(--green); }
+.stat-card.amber .stat-value { color: var(--amber); }
+.stat-card.red .stat-value { color: var(--red); }
+
+/* SEED LINK CARD */
+.seed-card {
+  background: var(--green-light);
+  border: 1px solid rgba(45,106,63,0.2);
+  border-radius: 14px;
+  padding: 16px 18px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.seed-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: var(--green);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.seed-link {
+  flex: 1;
+  min-width: 240px;
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  color: var(--text);
+  background: rgba(255,255,255,0.7);
+  padding: 8px 12px;
+  border-radius: 8px;
+  word-break: break-all;
+}
+
+/* TABLE */
+.table-wrap {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  overflow-x: auto;
+}
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+thead {
+  background: var(--card2);
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+th, td {
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+td.wrap-cell { white-space: normal; min-width: 200px; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--card2); }
+.row-num { color: var(--text-muted); font-family: 'DM Mono', monospace; font-size: 11px; }
+.code-pill {
+  display: inline-block;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  background: var(--green-light);
+  color: var(--green);
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+.code-pill.muted { background: var(--card2); color: var(--text-muted); }
+.shipped-check {
+  width: 18px; height: 18px;
+  cursor: pointer;
+  accent-color: var(--green);
+}
+.empty {
+  padding: 60px 20px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+/* CHAIN VIS */
+.chain-toggle { font-size: 11px; }
+#chainView {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  margin-top: 20px;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  line-height: 1.8;
+  max-height: 500px;
+  overflow-y: auto;
+  display: none;
+}
+#chainView.show { display: block; }
+.chain-node { padding-left: 0; }
+.chain-node .name { color: var(--green); font-weight: 600; }
+.chain-node .count { color: var(--text-muted); font-size: 10px; margin-left: 6px; }
+
+</style>
+</head>
+<body>
+
+<!-- 로그인 게이트 -->
+<div class="gate" id="gate">
+  <div class="gate-card">
+    <div class="gate-title">관리자 로그인</div>
+    <div class="gate-sub">벌나무 릴레이 운영 페이지</div>
+    <input type="password" class="gate-input" id="pwInput" placeholder="비밀번호" autofocus>
+    <button class="gate-btn" id="pwBtn">로그인</button>
+    <div class="gate-error" id="pwError">비밀번호가 틀렸어요</div>
+  </div>
+</div>
+
+<!-- 관리자 본문 -->
+<div class="admin-wrap" id="admin" style="display:none;">
+
+  <div class="admin-header">
+    <div class="admin-title">벌나무 <em>릴레이</em> · 관리자</div>
+    <div class="admin-actions">
+      <button class="btn chain-toggle" id="btnChain">🌿 체인 보기</button>
+      <button class="btn" id="btnRefresh">🔄 새로고침</button>
+      <button class="btn btn-primary" id="btnCSV">📥 CSV 다운로드</button>
+      <button class="btn btn-danger" id="btnReset">⚠️ 초기화</button>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row" id="statsRow"></div>
+
+  <!-- SEED LINK -->
+  <div class="seed-card">
+    <div class="seed-label">씨드 링크</div>
+    <div class="seed-link" id="seedLink">…</div>
+    <button class="btn" id="btnCopySeed">복사</button>
+  </div>
+  <p style="font-size:11px; color:var(--text-muted); margin:-12px 0 20px 4px;">
+    📌 첫 400명에게 카톡 채널로 이 링크를 발송하세요. (추천자 없이 진입하는 시드 링크)
+  </p>
+
+  <!-- 신청자 표 -->
+  <div class="table-wrap">
+    <table id="table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>신청일</th>
+          <th>이름</th>
+          <th>휴대폰</th>
+          <th class="wrap-cell">주소</th>
+          <th>내 코드</th>
+          <th>추천자</th>
+          <th>한 마디</th>
+          <th>발송</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <!-- 체인 시각화 -->
+  <div id="chainView"></div>
+
+</div>
+
+<script src="/shared.js"></script>
+<script>
+// ── 비밀번호 게이트 ──
+const SESSION_KEY = 'bulnamu_admin_session';
+
+function checkAuth() {
+  return sessionStorage.getItem(SESSION_KEY) === 'ok';
+}
+
+function showAdmin() {
+  document.getElementById('gate').style.display = 'none';
+  document.getElementById('admin').style.display = 'block';
+  render();
+}
+
+if (checkAuth()) {
+  showAdmin();
+}
+
+document.getElementById('pwBtn').addEventListener('click', tryLogin);
+document.getElementById('pwInput').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') tryLogin();
+});
+
+function tryLogin() {
+  const v = document.getElementById('pwInput').value;
+  if (v === CONFIG.ADMIN_PASSWORD) {
+    sessionStorage.setItem(SESSION_KEY, 'ok');
+    showAdmin();
+  } else {
+    document.getElementById('pwError').classList.add('show');
+    document.getElementById('pwInput').value = '';
+    document.getElementById('pwInput').focus();
+  }
+}
+
+// ── 렌더 ──
+function render() {
+  const stats = DataStore.getStats();
+  const applicants = DataStore.getAllApplicants();
+
+  // STATS
+  const shipped = applicants.filter(a => a.shipped).length;
+  const fromReferral = applicants.filter(a => a.referredByCode).length;
+  const conversionRate = applicants.length > 0
+    ? Math.round((fromReferral / applicants.length) * 100)
+    : 0;
+
+  document.getElementById('statsRow').innerHTML = `
+    <div class="stat-card green">
+      <div class="stat-label">총 신청</div>
+      <div class="stat-value">${stats.total}<em>/ ${stats.capacity}명</em></div>
+    </div>
+    <div class="stat-card amber">
+      <div class="stat-label">남은 자리</div>
+      <div class="stat-value">${stats.remaining}<em>명</em></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">발송 완료</div>
+      <div class="stat-value">${shipped}<em>/ ${stats.total}건</em></div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-label">추천 유입</div>
+      <div class="stat-value">${fromReferral}<em>명 (${conversionRate}%)</em></div>
+    </div>
+  `;
+
+  // SEED LINK (씨드 신청자가 없으면 자동 생성)
+  let seedCode;
+  const seedApplicant = applicants.find(a => a.id && String(a.id).startsWith('seed-'));
+  if (seedApplicant) {
+    seedCode = seedApplicant.code;
+  } else {
+    seedCode = DataStore.seedDemo();
+  }
+  const seedURL = Util.buildReferralURL(seedCode || 'SEED');
+  document.getElementById('seedLink').textContent = seedURL;
+  document.getElementById('btnCopySeed').onclick = async () => {
+    await Util.copyToClipboard(seedURL);
+    const b = document.getElementById('btnCopySeed');
+    const orig = b.textContent;
+    b.textContent = '복사됨';
+    setTimeout(() => { b.textContent = orig; }, 1500);
+  };
+
+  // TABLE
+  const tbody = document.getElementById('tbody');
+  if (applicants.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="9" class="empty">아직 신청자가 없어요</td></tr>`;
+  } else {
+    tbody.innerHTML = applicants.map((a, i) => `
+      <tr>
+        <td class="row-num">${i + 1}</td>
+        <td>${formatDate(a.createdAt)}</td>
+        <td><strong>${escapeHTML(a.name)}</strong></td>
+        <td>${escapeHTML(a.phone)}</td>
+        <td class="wrap-cell">${escapeHTML(a.address)}</td>
+        <td><span class="code-pill">${a.code}</span></td>
+        <td>${a.referredByName ? `<span class="code-pill muted">${escapeHTML(a.referredByName)}</span>` : '<span style="color:var(--text-muted);">시드</span>'}</td>
+        <td class="wrap-cell" style="color:var(--text-muted); font-size:12px;">${escapeHTML(a.message || '')}</td>
+        <td><input type="checkbox" class="shipped-check" data-id="${a.id}" ${a.shipped ? 'checked' : ''}></td>
+      </tr>
+    `).join('');
+
+    // 발송 체크박스
+    tbody.querySelectorAll('.shipped-check').forEach(cb => {
+      cb.addEventListener('change', (e) => {
+        DataStore.markShipped(e.target.dataset.id, e.target.checked);
+      });
+    });
+  }
+
+  // 체인 뷰
+  renderChain(applicants);
+}
+
+function renderChain(applicants) {
+  // 트리 구조 만들기
+  const byCode = {};
+  applicants.forEach(a => { byCode[a.code] = { ...a, children: [] }; });
+  const roots = [];
+  applicants.forEach(a => {
+    if (a.referredByCode && byCode[a.referredByCode]) {
+      byCode[a.referredByCode].children.push(byCode[a.code]);
+    } else {
+      roots.push(byCode[a.code]);
+    }
+  });
+
+  function renderNode(node, depth) {
+    const indent = '│  '.repeat(depth);
+    const branch = depth > 0 ? '├─ ' : '◉ ';
+    const childCount = node.children.length;
+    let html = `<div class="chain-node">${indent}${branch}<span class="name">${escapeHTML(node.name)}</span> <span class="count">${childCount > 0 ? `+${childCount}` : ''}</span></div>`;
+    node.children.forEach(c => { html += renderNode(c, depth + 1); });
+    return html;
+  }
+
+  document.getElementById('chainView').innerHTML = roots.length === 0
+    ? '<div class="empty">아직 체인이 없어요</div>'
+    : roots.map(r => renderNode(r, 0)).join('');
+}
+
+document.getElementById('btnChain').addEventListener('click', () => {
+  document.getElementById('chainView').classList.toggle('show');
+});
+
+document.getElementById('btnRefresh').addEventListener('click', render);
+
+document.getElementById('btnCSV').addEventListener('click', () => {
+  const csv = DataStore.toCSV();
+  // BOM 추가 (엑셀 한글 깨짐 방지)
+  const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  const ymd = new Date().toISOString().slice(0, 10);
+  a.download = `벌나무릴레이_신청자_${ymd}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+});
+
+document.getElementById('btnReset').addEventListener('click', () => {
+  if (!confirm('정말 모든 데이터를 초기화하시겠어요?\n\n신청자 정보가 모두 삭제됩니다.\n(이 동작은 되돌릴 수 없습니다)')) return;
+  if (!confirm('한 번 더 확인합니다.\n\n진짜로 전체 삭제할까요?')) return;
+  DataStore._reset();
+  alert('초기화됐어요');
+  render();
+});
+
+// 유틸
+function formatDate(iso) {
+  const d = new Date(iso);
+  const M = String(d.getMonth() + 1).padStart(2, '0');
+  const D = String(d.getDate()).padStart(2, '0');
+  const h = String(d.getHours()).padStart(2, '0');
+  const m = String(d.getMinutes()).padStart(2, '0');
+  return `${M}.${D} ${h}:${m}`;
+}
+function escapeHTML(s) {
+  return String(s || '').replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+}
+</script>
+
+</body>
+</html>
